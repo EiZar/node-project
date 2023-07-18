@@ -1,9 +1,26 @@
 var express = require("express");
 var router = express.Router();
+const todos = require('../controllers/toDoController');
 
-router.get('/', function(req, res, next) {
-    console.log('Todo Routers');
-    res.send([]);
-});
+console.log("todo route >>>>");
+router.get('/', todos.getAllToDos);
+router.get('/:id', todos.getTodoById);
+router.get('/:todoId/task/:taskId', todos.getByTodoIdAndTaskId);
+
+//multiple routes
+router.get('/multiple/routes', todos.multipleRoute1);
+router.get('/multiple/routes', todos.multipleRoute2);
+
+//route for http://localhost:3000/todos/abbbbbbbcd 
+//b must be one or more because it is using RegExr
+router.get('/reg/ab+cd', todos.todoWildCard);
+//download file
+router.get('/download/file', todos.downloadFile);
+//end with status
+router.get('/response/end', todos.responseEnd);
+//redirect
+router.get('/response/redirect', todos.responseRedirect);
+
+router.post('/', todos.createTodo);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const todos = require('../controllers/toDoController');
 
 console.log("todo route >>>>");
 router.get('/', todos.getAllToDos);
+router.get('/completed', todos.getAllCompletedToDos);
 router.get('/:id', todos.getTodoById);
 router.get('/:todoId/task/:taskId', todos.getByTodoIdAndTaskId);
 
@@ -21,6 +22,8 @@ router.get('/response/end', todos.responseEnd);
 //redirect
 router.get('/response/redirect', todos.responseRedirect);
 
+router.put('/:id', todos.updateTodo);
+router.delete('/:id', todos.deleteTodo);
 router.post('/', todos.createTodo);
 
 module.exports = router;

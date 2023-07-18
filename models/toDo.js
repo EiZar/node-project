@@ -3,10 +3,10 @@ const Schema = mongoose.Schema;
 const ToDoSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     completed: {
         type: Boolean
     }
 });
-module.exports = mongoose.Model('ToDo', ToDoSchema);
+module.exports = mongoose.model('ToDo', ToDoSchema);

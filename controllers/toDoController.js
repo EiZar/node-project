@@ -1,29 +1,68 @@
 var toDoService = require('../services/toDoService');
 
-async function getAllToDos(req, res, next) {
-    let todos = await toDoService.getAllToDos();
-    console.log('Todo Routers get ', todos);
-    console.log('request time is  ', req.requestTime);
-    res.json(todos);
-}
-
-async function getAllCompletedToDos(req, res, next) {
-    let todos = await toDoService.getAllCompletedToDos();
-    console.log('Todo Routers get ', todos);
-    console.log('request time is  ', req.requestTime);
-    res.json(todos);
-}
-
-async function getTodoById(req, res, next) {
-    try{
-        let toDoId = req.params['id'];
-        let todo = await toDoService.getToDoById(toDoId);
-        if(!todo) res.status(400).json({error: 'ToDo not found'});
-        res.json(todo);
-    } catch(err) {
-        res.status(404).json({error: 'ToDo not found'});
+const handle = function(func, httpErrorCode) {
+    return async function (req, res, next) {
+        func(req, res, next)
+        .catch(err => {
+            return res.status(httpErrorCode).json({error: err})
+        });
     }
-};
+}
+
+async function getAllTodos(req, res, next) {
+    let todos = await toDoService.getAllTodos();
+    console.log('request time is  ', req.requestTime);
+    res.json(todos);
+}
+
+async function getAllCompletedTodos(req, res, next) {
+    let todos = await toDoService.getAllCompletedTodos();
+    console.log('request time is  ', req.requestTime);
+    res.json(todos);
+}
+
+async function getTodoByIdHandler(req, res, next) {
+    let toDoId = req.params['id'];
+    let todo = await toDoService.getTodoById(toDoId);
+    if(!todo) throw Error('Todo not found!');
+    await res.status(200).json(todo);
+}
+
+const getTodoById = function(req, res, next) {
+    handle(getTodoByIdHandler, 404)(req, res, next);
+}
+
+async function updateTodoHandler(req, res, next) {
+    const todoId = req.params['id'];
+    const todo = await toDoService.updateTodo(todoId, req.body);
+    if(!todo) throw Error('Cannot update todo');
+    await res.json(todo); 
+}
+
+const updateTodo = function(req, res, next) {
+    handle(updateTodoHandler, 400)(req, res, next);
+}
+
+async function deleteTodoHandler(req, res, next) {
+    const todoId = req.params['id'];
+    const todo = await toDoService.deleteTodo(todoId);
+    if(!todo) throw Error('Cannot delete todo');
+    await res.json(todo); 
+}
+
+const deleteTodo = function(req, res, next) {
+    handle(deleteTodoHandler, 400)(req, res, next);
+}
+
+async function createTodoHandler(req, res, next) {
+    const todo = await toDoService.saveTodo(req.body);
+    if(!todo) throw Error('Cannot save todo');
+    await res.status(201).json(todo); 
+}
+
+const createTodo = function(req, res, next) {
+    handle(createTodoHandler, 400)(req, res, next);
+}
 
 function todoWildCard(req, res, next) {
     console.log('Todo ab+cd get router ');
@@ -70,51 +109,9 @@ function responseRedirect(req, res, next) {
     res.redirect('/api/todos');
 }
 
-async function updateTodo(req, res, next) {
-    console.log('update todo ', req.body);
-    try{
-        const todoId = req.params['id'];
-        const todo = await toDoService.updateToDo(todoId, req.body);
-        if(!todo) throw Error('Cannot update todo');
-        await res.json(todo); 
-    } catch(err) {
-        console.log(err);
-        await res.status(400).json({error: 'Cannot update todo'});
-    }
-}
-
-async function deleteTodo(req, res, next) {
-    console.log('delete todo ', req.body);
-    try{
-        const todoId = req.params['id'];
-        const todo = await toDoService.deleteToDo(todoId);
-        if(!todo) throw Error('Cannot delete todo');
-        await res.json(todo); 
-    } catch(err) {
-        console.log(err);
-        await res.status(400).json({error: 'Cannot delete todo'});
-    }
-}
-
-async function createTodo(req, res, next) {
-    console.log('Todo Routers post ', req.body);
-    try{
-        const todo = await toDoService.saveToDo(req.body);
-        if(!todo) throw Error('Cannot save todo');
-        await res.status(201).json(todo); 
-    } catch(err) {
-        console.log(err);
-        await res.status(400).json({message: err});
-    }
-    // res.send({
-    //     id: 1,
-    //     name: 'CSP'
-    // });
-}
-
 module.exports = {
-    getAllToDos,
-    getAllCompletedToDos,
+    getAllTodos,
+    getAllCompletedTodos,
     getTodoById,
     todoWildCard,
     getByTodoIdAndTaskId,

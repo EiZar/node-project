@@ -3,8 +3,8 @@ var router = express.Router();
 const todos = require('../controllers/toDoController');
 
 console.log("todo route >>>>");
-router.get('/', todos.getAllToDos);
-router.get('/completed', todos.getAllCompletedToDos);
+router.get('/', todos.getAllTodos);
+router.get('/completed', todos.getAllCompletedTodos);
 router.get('/:id', todos.getTodoById);
 router.get('/:todoId/task/:taskId', todos.getByTodoIdAndTaskId);
 

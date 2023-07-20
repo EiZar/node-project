@@ -1,6 +1,6 @@
 let Todo = require('../models/toDo');
 
-async function getAllToDos () {
+async function getAllTodos () {
     return Todo.find();
     // return [{
     //     id: 1,
@@ -12,13 +12,13 @@ async function getAllToDos () {
     // }];
 }
 
-async function getAllCompletedToDos(){
+async function getAllCompletedTodos(){
     return Todo.find({
         completed: true
     });
 }
 
-async function getToDoById (id) {
+async function getTodoById (id) {
     let todo = await Todo.findById(id);
     return todo;
     // return {
@@ -27,27 +27,27 @@ async function getToDoById (id) {
     // }; // important not to miss the semicoma
 }
 
-async function updateToDo(id, todo) {
+async function updateTodo(id, todo) {
     const updateToDo = Todo.findByIdAndUpdate(id, todo, {new: true});
     return updateToDo;
 }
 
-async function deleteToDo(id) {
+async function deleteTodo(id) {
     const deletedToDo = Todo.findByIdAndDelete(id);
     return deletedToDo;
 }
 
-async function saveToDo(todo) {
+async function saveTodo(todo) {
     console.log("save todo service ");
     const newToDo = new Todo(todo);
     return newToDo.save();
 }
 
 module.exports = {
-    getAllToDos,
-    getAllCompletedToDos,
-    getToDoById,
-    updateToDo,
-    deleteToDo,
-    saveToDo
+    getAllTodos,
+    getAllCompletedTodos,
+    getTodoById,
+    updateTodo,
+    deleteTodo,
+    saveTodo
 }

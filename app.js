@@ -7,6 +7,7 @@ var logger = require('morgan');
 // var cors = require('cors');
 var mongoose = require('mongoose');
 var { db } = require('./config/database');
+console.log("db in app.js ", db);
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -50,7 +51,7 @@ mongoose.connect(db, {
 
 //register routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/todos', todosRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/directors', directorsRouter);

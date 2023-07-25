@@ -19,19 +19,20 @@ async function getMovieByTitle(title) {
 }
 
 async function createMovie(movie) {
+    console.log("..........new start.........");
     console.log("movie service create movie", movie);
     console.log("review body ", movie.review.body);
     console.log("movie director ", movie.director);
-    const newMovie = new Movie({
-        title: movie.title,
-        director: mongoose.Types.ObjectId(movie.director),
-        review: {
-            rating: movie.review.rating,
-            body: movie.review.body,
-        },
-        year: movie.year,
-    });
-    // const newMovie = new Movie(movie);
+    // const newMovie = new Movie({
+    //     title: movie.title,
+    //     director: mongoose.Types.ObjectId(movie.director),
+    //     review: {
+    //         rating: movie.review.rating,
+    //         body: movie.review.body,
+    //     },
+    //     year: movie.year,
+    // });
+    const newMovie = new Movie(movie);
     console.log("movie service before save", newMovie);
     await newMovie.save();
     // return savedMovie.populate('Director');

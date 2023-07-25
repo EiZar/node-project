@@ -38,7 +38,6 @@ async function deleteTodo(id) {
 }
 
 async function saveTodo(todo) {
-    console.log("save todo service ");
     const newToDo = new Todo(todo);
     return newToDo.save();
 }

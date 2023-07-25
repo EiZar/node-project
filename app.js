@@ -14,6 +14,7 @@ var usersRouter = require('./routes/users');
 var todosRouter = require('./routes/toDos');
 var moviesRouter = require('./routes/movies');
 var directorsRouter = require('./routes/directors');
+let auth = require('./middleware/auth');
 
 //build express framework
 var app = express();
@@ -52,9 +53,9 @@ mongoose.connect(db, {
 //register routes
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/todos', todosRouter);
-app.use('/api/movies', moviesRouter);
-app.use('/api/directors', directorsRouter);
+app.use('/api/todos', auth.verifyUserToken, todosRouter);
+app.use('/api/movies', auth.verifyUserToken, moviesRouter);
+app.use('/api/directors', auth.verifyUserToken, directorsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

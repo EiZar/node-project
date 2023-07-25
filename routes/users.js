@@ -7,6 +7,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/:id', users.getUserById);
 router.post('/', users.registerUser);
 router.post('/login', users.loginUser);
 

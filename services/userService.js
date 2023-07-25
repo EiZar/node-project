@@ -28,7 +28,13 @@ async function login(username, password) {
     throw Error('Invalid user or password!');
 }
 
+async function getUserById(id) {
+    let user = await User.findById(id);
+    return user;
+}
+
 module.exports = {
     register,
-    login
+    login,
+    getUserById
 }

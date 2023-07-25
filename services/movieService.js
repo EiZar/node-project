@@ -19,10 +19,6 @@ async function getMovieByTitle(title) {
 }
 
 async function createMovie(movie) {
-    console.log("..........new start.........");
-    console.log("movie service create movie", movie);
-    console.log("review body ", movie.review.body);
-    console.log("movie director ", movie.director);
     // const newMovie = new Movie({
     //     title: movie.title,
     //     director: mongoose.Types.ObjectId(movie.director),

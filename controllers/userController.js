@@ -36,7 +36,14 @@ async function loginUser(req, res, next) {
     }
 }
 
+async function getUserById(req, res, next) {
+    let userId = req.params['id'];
+    let user = await userService.getUserById(userId);
+    res.status(200).json(user);
+}
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getUserById
 }
